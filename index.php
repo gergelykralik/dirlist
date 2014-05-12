@@ -3,162 +3,12 @@
 Directory Listing Script
 ========================
 Script Author: Gergely Kralik <info@gkralik.eu>
-
-
-Start Directory - To list the files contained within the current 
-directory enter '.', otherwise enter the path to the directory 
-you wish to list. The path must be relative to the current 
-directory.
-*/
-$startDir = '.';
-
-/*
-Show Thumbnails? - Set to true if you wish to use the 
-scripts auto-thumbnail generation capabilities.
-This requires that GD2 is installed.
-*/
-$showThumbnails = true; 
-
-/*
-Show Directories - Do you want to make subdirectories available?
-If not set this to false
-*/
-$showDirs = true;
-
-/* 
-Force downloads - Do you want to force people to download the files
-rather than viewing them in their browser?
-*/
-$forceDownloads = false;
-
-/*
-Hide Files - If you wish to hide certain files or directories 
-then enter their details here. The values entered are matched
-against the file/directory names. If any part of the name 
-matches what is entered below then it is now shown.
-*/
-$hide = array(
-				'dirlist',
-				'index.php',
-				'.htaccess',
-				'.htpasswd'
-			);
-			 
-/* 
-Show index files - if an index file is found in a directory
-to you want to display that rather than the listing output 
-from this script?
-*/			
-$displayIndex = false;
-
-/*
-Overwrite files - If a user uploads a file with the same
-name as an existing file do you want the existing file
-to be overwritten?
-*/
-$overwrite = false;
-
-/*
-Index files - The follow array contains all the index files
-that will be used if $displayindex (above) is set to true.
-Feel free to add, delete or alter these
 */
 
-$indexFiles = array (
-				'index.html',
-				'index.htm',
-				'default.htm',
-				'default.html'
-			);
-			
-/*
-File Icons - If you want to add your own special file icons use 
-this section below. Each entry relates to the extension of the 
-given file, in the form <extension> => <filename>. 
-These files must be located within the dlf directory.
-*/
-$filetypes = array (
-				'jpeg' => 'jpg.png',
-				'bmp' => 'bmp.png',
-				'jpg' => 'jpg.png', 
-				'gif' => 'gif.png',
-				'zip' => 'zip.png',
-				'exe' => 'exe.png',
-				'setup' => 'setup.gif',
-				'htm' => 'html.png',
-				'html' => 'html.png',
-				'fla' => 'fla.gif',
-				'swf' => 'swf.gif',
-				'doc' => 'doc.png',
-				'sig' => 'sig.gif',
-				'fh10' => 'fh10.gif',
-				'pdf' => 'pdf.png',
-				'rm' => 'real.gif',
-				'mpg' => 'mpg.png',
-				'mpeg' => 'mpg.png',
-				'mov' => 'video2.gif',
-				'avi' => 'avi.png',
-				'eps' => 'eps.png',
-				'gz' => 'archive.png',
-				'asc' => 'sig.gif',
-				'aac' => 'aac.png',
-				'ai' => 'ai.png',
-				'aiff' => 'aiff.png',
-				'cpp' => 'cpp.png',
-				'css' => 'css.png',
-				'dat' => 'dat.png',
-				'dmg' => 'dmg.png',
-				'dotx' => 'dotx.png',
-				'dwg' => 'dwg.png',
-				'dxf' => 'dxf.png',
-				'flv' => 'flv.png',
-				'h' => 'h.png',
-				'hpp' => 'hpp.png',
-				'ics' => 'ics.png',
-				'iso' => 'iso.png',
-				'java' => 'java.png',
-				'jar' => 'java.png',
-				'js' => 'js.png',
-				'key' => 'key.png',
-				'less' => 'less.png',
-				'mid' => 'mid.png',
-				'mp3' => 'mp3.png',
-				'mp4' => 'mp4.png',
-				'odf' => 'odf.png',
-				'ods' => 'ods.png',
-				'odt' => 'odt.png',
-				'otp' => 'otp.png',
-				'ots' => 'ots.png',
-				'ott' => 'ott.png',
-				'php' => 'php.png',
-				'png' => 'png.png',
-				'psd' => 'psd.png',
-				'py' => 'py.png',
-				'qt' => 'qt.png',
-				'rar' => 'rar.png',
-				'rb' => 'rb.png',
-				'rtf' => 'rtf.png',
-				'sass' => 'sass.png',
-				'scss' => 'scss.png',
-				'sql' => 'sql.png',
-				'tga' => 'tga.png',
-				'tgz' => 'tgz.png',
-				'tiff' => 'tiff.png',
-				'txt' => 'txt.png',
-				'wav' => 'wav.png',
-				'xls' => 'xls.png',
-				'xlsx' => 'xlsx.png',
-				'xml' => 'xml.png',
-				'yml' => 'yml.png'
-			);
-			
-/*
-That's it! You are now ready to upload this script to the server.
+require_once('dirlist/_config.php');
 
-Only edit what is below this line if you are sure that you know what you
-are doing!
-*/
 error_reporting(0);
+
 if(!function_exists('imagecreatetruecolor')) $showThumbnails = false;
 $leadon = $startDir;
 if($leadon=='.') $leadon = '';
@@ -289,19 +139,19 @@ $dirs = @array_values($dirs); $files = @array_values($files);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Directory Listing of <?=dirname($_SERVER['PHP_SELF']).'/'.$leadon;?></title>
-<link rel="stylesheet" type="text/css" href="dlf/styles.css" />
+<link rel="stylesheet" type="text/css" href="dirlist/styles.css" />
 <?
 if($showthumbnails) {
 ?>
 <script language="javascript" type="text/javascript">
 <!--
 function o(n, i) {
-	document.images['thumb'+n].src = 'dlf/i.php?f='+i;
+	document.images['thumb'+n].src = 'dirlist/i.php?f='+i;
 
 }
 
 function f(n) {
-	document.images['thumb'+n].src = 'dlf/trans.gif';
+	document.images['thumb'+n].src = 'dirlist/trans.gif';
 }
 //-->
 </script>
@@ -356,7 +206,7 @@ function f(n) {
 	$class = 'b';
 	if($dirok) {
 	?>
-	<div><a href="<?=$_SERVER['PHP_SELF'].'?dir='.urlencode($dotdotdir);?>" class="<?=$class;?>"><img src="dlf/dirup.png" alt="Folder" /><strong>..</strong> <em>-</em> <?=date ("M d Y h:i:s A", filemtime($dotdotdir));?></a></div>
+	<div><a href="<?=$_SERVER['PHP_SELF'].'?dir='.urlencode($dotdotdir);?>" class="<?=$class;?>"><img src="dirlist/dirup.png" alt="Folder" /><strong>..</strong> <em>-</em> <?=date ("M d Y h:i:s A", filemtime($dotdotdir));?></a></div>
 	<?
 		if($class=='b') $class='w';
 		else $class = 'b';
@@ -364,7 +214,7 @@ function f(n) {
 	$arsize = sizeof($dirs);
 	for($i=0;$i<$arsize;$i++) {
 	?>
-	<div><a href="<?=$_SERVER['PHP_SELF'].'?dir='.urlencode($leadon.$dirs[$i]);?>" class="<?=$class;?>"><img src="dlf/folder.png" alt="<?=$dirs[$i];?>" /><strong><?=$dirs[$i];?></strong> <em>-</em> <?=date ("M d Y h:i:s A", filemtime($leadon.$dirs[$i]));?></a></div>
+	<div><a href="<?=$_SERVER['PHP_SELF'].'?dir='.urlencode($leadon.$dirs[$i]);?>" class="<?=$class;?>"><img src="dirlist/folder.png" alt="<?=$dirs[$i];?>" /><strong><?=$dirs[$i];?></strong> <em>-</em> <?=date ("M d Y h:i:s A", filemtime($leadon.$dirs[$i]));?></a></div>
 	<?
 		if($class=='b') $class='w';
 		else $class = 'b';	
@@ -378,7 +228,7 @@ function f(n) {
 		$thumb = '';
 		
 		if($showthumbnails && in_array($ext, $supportedimages)) {
-			$thumb = '<span><img src="dlf/trans.gif" alt="'.$files[$i].'" name="thumb'.$i.'" /></span>';
+			$thumb = '<span><img src="dirlist/trans.gif" alt="'.$files[$i].'" name="thumb'.$i.'" /></span>';
 			$thumb2 = ' onmouseover="o('.$i.', \''.urlencode($leadon . $files[$i]).'\');" onmouseout="f('.$i.');"';
 			
 		}
@@ -408,7 +258,7 @@ function f(n) {
 		$sfizeSrt = round(((($fsize / 1024) / 1024) / 1024), 2) . ' GB';
 	}
 	?>
-	<div><a href="<?=$fileurl;?>" target="_blank" class="<?=$class;?>"<?=$thumb2;?>><img src="dlf/<?=$icon;?>" alt="<?=$files[$i];?>" /><strong><?=$filename;?></strong> <em><?=$sfizeSrt;?></em> <?=date ("M d Y h:i:s A", filemtime($leadon.$files[$i]));?><?=$thumb;?></a></div>
+	<div><a href="<?=$fileurl;?>" target="_blank" class="<?=$class;?>"<?=$thumb2;?>><img src="dirlist/<?=$icon;?>" alt="<?=$files[$i];?>" /><strong><?=$filename;?></strong> <em><?=$sfizeSrt;?></em> <?=date ("M d Y h:i:s A", filemtime($leadon.$files[$i]));?><?=$thumb;?></a></div>
 	<?
 		if($class=='b') $class='w';
 		else $class = 'b';	
